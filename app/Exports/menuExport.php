@@ -14,7 +14,7 @@ use \Maatwebsite\Excel\Sheet;
 
 use Maatwebsite\Excel\Facades\Excel as FacadesExcel;
 
-class menuExport implements FromCollection, withHeadings
+class menuExport implements FromCollection, WithEvents, WithHeadings
 {
     /**
      * @return \Illuminate\Support\Collection
@@ -26,14 +26,14 @@ class menuExport implements FromCollection, withHeadings
 
     public function exportData()
     {
-        $date = date('Y-m-d');
-        return Excel::download(new menuExport,  '_paket.xlsx');
+        // $date = date('Y-m-d');
+        return Excel::download(new menuExport,  '_Menu.xlsx');
     }
     public function headings(): array
     {
         return [
             'No.',
-            'Nama Jenis',
+            'Jenis Id',
             'Nama Menu',
             'Harga',
             'Image',
@@ -45,21 +45,24 @@ class menuExport implements FromCollection, withHeadings
     public function registerEvents(): array
     {
         return [
-            AfterSheet::class  => function (AfterSheet $event) {
-                $event->sheet->grtColumnDimension('A')->setAutoSize(true);
-                $event->sheet->grtColumnDimension('B')->setAutoSize(true);
-                $event->sheet->grtColumnDimension('C')->setAutoSize(true);
+            AfterSheet::class => function (AfterSheet $event) {
+                $event->sheet->getColumnDimension('A')->setAutoSize(true);
+                $event->sheet->getColumnDimension('B')->setAutoSize(true);
+                $event->sheet->getColumnDimension('C')->setAutoSize(true);
+                $event->sheet->getColumnDimension('D')->setAutoSize(true);
+                $event->sheet->getColumnDimension('E')->setAutoSize(true);
+                $event->sheet->getColumnDimension('F')->setAutoSize(true);
 
-                $event->sheet->insertNewRoeBefore(1, 2);
-                $event->sheet->mergeCells('A1, G1');
-                $event->sheet->setCellValue('A1', 'menu');
+                $event->sheet->insertNewRowBefore(1, 2);
+                $event->sheet->mergeCells('A1:H1');
+                $event->sheet->setCellValue('A1', 'DATA MENU');
                 $event->sheet->getStyle('A1')->getFont()->setBold(true);
                 $event->sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-                $event->sheet->getStyle('A3:G' . $event->sheet->getHighestRow())->applyFromArray([
+                $event->sheet->getStyle('A3:H' . $event->sheet->getHighestRow())->applyFromArray([
                     'borders' => [
                         'allBorders' => [
-                            'borderStyle' => \phpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
                             'color' => ['argb' => '000000']
                         ]
                     ]

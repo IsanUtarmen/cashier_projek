@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Jenis;
 
 class JenisSeeder extends Seeder
 {
@@ -12,6 +13,6 @@ class JenisSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Jenis::factory()->count(3)->create();
     }
 }

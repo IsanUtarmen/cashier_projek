@@ -35,10 +35,10 @@ class UserController extends Controller
             $user = Auth::user();
             switch ($user->level) {
                 case '1':
-                    return redirect()->intended('/jenis');
+                return redirect()->intended('/menu');
                     break;
                 case '2':
-                    return redirect()->intended('/pelanggan');
+                    return redirect()->intended('/pemesanan');
                     break;
                 case '3':
                     return redirect()->intended('/category');

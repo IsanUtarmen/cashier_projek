@@ -82,6 +82,10 @@
                                             <li><a href="{{ url('/meja') }}">Meja</a></li>
                                             <li><a href="{{ url('/produk_titipan') }}">Produk Titipan</a></li>
                                             <li><a href="{{ url('/tentang-aplikasi') }}">Tentang Aplikasi</a></li>
+                                            <li><a href="{{ url('/contact') }}">Contact Us</a></li>
+                                            <li><a href="{{ url('/absensi') }}">Absensi Kerja</a></li>
+                                         
+
                                         </ul>
                                     </li>
                                 @endif

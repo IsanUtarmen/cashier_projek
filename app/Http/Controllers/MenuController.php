@@ -11,8 +11,11 @@ use Exception;
 use PDOException;
 use App\Exports\MenuExport;
 use App\Imports\MenuImport;
+use Dompdf\Dompdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use Maatwebsite\Excel\Facades\Excel;
+
 
 class MenuController extends Controller
 {
@@ -30,13 +33,50 @@ class MenuController extends Controller
         }
     }
 
+    public function exportData()
+    {
+        // $date = date('Y-m-d');
+        return Excel::download(new MenuExport,   '_menu.xlsx');
+    }
+
+    public function importData()
+    {
+        Excel::import(new MenuImport, request()->file('import')); // Replace XLSX with the appropriate reader type
+        return redirect('menu')->with('success', 'Import data paket berhasil!');
+    }
+
+    public function generatepdf()
+    {
+        // Get data
+        $menu = Menu::all();
+
+        // Loop through menu items and encode images to base64
+        foreach ($menu as $p) {
+            $imagePath = public_path('images/' . $p->image);
+            $imageData = base64_encode(file_get_contents($imagePath));
+            $p->imageData = $imageData;
+        }
+
+        // Generate PDF
+        $dompdf = new Dompdf();
+        $html = View::make('menu.menu-pdf', compact('menu'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+
+        // Return the PDF as a download
+        return $dompdf->stream('menu.pdf');
+    }
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreMenuRequest $request)
     {
+
+
+
         $request->validate([
             'image' => 'required|image|mimes:png,jpg,jpeg,svg|max:2048',
+
         ]);
 
         $imageName = time() . '.' . $request->image->extension();
@@ -81,20 +121,5 @@ class MenuController extends Controller
         return redirect('menu')->with('success', 'Data Menu berhasil dihapus!');
     }
 
-    public function exportData()
-    {
-        $date = date('Y-m-d');
-        return Excel::download(new MenuExport, $date . '_menu.xlsx');
-    }
 
-    public function importData(Request $request)
-    {
-        try {
-            $file = $request->file('file');
-            \Maatwebsite\Excel\Facades\Excel::import(new MenuImport, $file);
-            return redirect('menu')->with('success', 'Data berhasil diimpor!');
-        } catch (\Exception $e) {
-            return redirect('menu')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
-        }
-    }
 }

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Meja;
 
 class MejaSeeder extends Seeder
 {
@@ -12,6 +13,7 @@ class MejaSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+
+
     }
 }

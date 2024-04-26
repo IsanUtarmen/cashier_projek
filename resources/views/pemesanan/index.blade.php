@@ -68,11 +68,11 @@
                                                                 Nama: {{ $menu->nama_menu }} <br>
                                                                 Jumlah: {{ $menu->stok->jumlah }}
                                                                 </div> --}}
-                                                                {{-- <div>Nama: {{ $menu->nama_menu }}<br>
+                                                                <div>Nama: {{ $menu->nama_menu }}<br>
                                                                 Jumlah: @if($menu->stok)
                                                                 {{ $menu->stok->jumlah }}
                                                                 @endif
-                                                            </div> --}}
+                                                            </div>
                                                         </li>
                                                     @endforeach
                                                 </ul>
@@ -178,7 +178,7 @@
                                     background-color: lightblue;
                                     /* Mengubah warna latar belakang saat hover */
                                 }
-                                
+
                                 /* Style untuk item menu */
                                 .menu-item li {
                                     cursor: pointer;
@@ -261,7 +261,7 @@
                                 .container {
                                     border: 2px ;
                                     border-radius: 2px;
-        
+
                                     /* Menambahkan sedikit efek rounded pada border */
                                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                                     /* Menambahkan bayangan */
@@ -298,7 +298,7 @@
 
                                 .menu-item {
                                     list-style-type: none;
-                                    display: flex; 
+                                    display: flex;
                                     gap: 1em;
                                 }
 
@@ -376,7 +376,7 @@
                                     /* Warna latar belakang tombol saat hover */
                                 }
                             </style>
-        
+
                             <div class="col-md-5">
                                 <div class="x_panel">
                                     <div class="x_title">
@@ -408,7 +408,7 @@
                                                 <button id="btn-bayar" type="submit" class="col-sm-12 btn btn-primary">Bayar</button>
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -422,6 +422,7 @@
 
 @push('script')
     <script>
+
           $(function() {
             // Inisialisasi
             const orderedList = [];

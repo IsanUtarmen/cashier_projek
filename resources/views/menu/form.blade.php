@@ -40,20 +40,22 @@
                 <input type="number" class="form-control" id="harga" placeholder="Harga" name="harga">
               </div>
 
+              <div id="method"></div>
               <div class="form-group row">
                 <label for="inputFile" class="col-sm-4 col-form-label">Image</label>
                 <div class="col-sm-8">
-                    <input type="file" id="image" value="" name="image">
-                    {{-- <input type="file" id="image" name="image"/> --}}
+                  <input type="file" id="image" value="" name="image">
+                  {{-- <input type="file" id="textArea" id="image" name="image"/> --}}
                 </div>
-                </div>
+              </div>
 
+              <div id="method"></div>
               <div class="form-group row">
-                <label for="exampleFormControlTextarea1" class="form-label col-sm-4">Deskripsi</label>
+                <label for="staticEmail" class="col-sm-4 col-form-label">Deskripsi</label>
                 <div class="col-sm-8">
-                    <textarea class="form-control" id="deskripsi" value="" name="deskripsi"></textarea>
+                  <textarea class="form-control" id="deskripsi" value="" name="deskripsi"></textarea>
                 </div>
-            </div>
+              </div>
 
         </div>
         <div class="modal-footer">
@@ -61,35 +63,5 @@
           <button type="submit" class="btn btn-primary">Save changes</button>
         </div>
           </form>
-    </div>
-</div>
-<!-- Modal Form Impor -->
-<div class="modal fade" id="formImport" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <!-- Konten Modal -->
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <!-- Header Modal -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Form Import Menu</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <!-- Body Modal -->
-            <form action="{{ route('import-jenis') }}" method="post" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <!-- Form Untuk Import -->
-                    @csrf
-                    <input type="file" name="file" accept=".xlsx, .xls">
-                </div>
-                <!-- Footer Modal -->
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Import</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </form>
-        </div>
     </div>
 </div>

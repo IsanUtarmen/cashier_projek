@@ -39,6 +39,9 @@
                                         data-target="#modalFormJenis">
                                         Tambah Jenis
                                     </button>
+                                    <a href="{{ route('export-jenis-pdf') }}" class="btn btn-danger">
+                                        <i class="fas fa-file-pdf"></i> Export PDF
+                                    </a>
                                     <a href="{{ route('export-jenis') }}" class="btn btn-success">
                                         <i class="fa fa-file-excel"></i> Export
                                     </a>

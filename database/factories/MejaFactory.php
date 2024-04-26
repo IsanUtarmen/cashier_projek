@@ -17,7 +17,7 @@ class MejaFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            // Meja::factory()->count(3)->create();
         ];
     }
 }

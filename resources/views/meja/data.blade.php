@@ -18,9 +18,11 @@
                         <td>{{ $p->kapasitas }}</td>
                         <td>{{ $p->status }}</td>
                         <td>
-                            <button class="btn text-warning" data-toggle="modal" data-target="#modalFormmeja"
-                                data-mode="edit" data-id="{{ $p->id }}" data-nomor_meja="{{ $p->nomor_meja }}"
-                                data-kapasitas="{{ $p->kapasitas }}" data-status="{{ $p->status }}">
+                            <button class="btn text-warning" data-toggle="modal" data-target="#modalFormMeja"
+                                data-mode="edit" data-id="{{ $p->id }}"
+                                data-nomor_meja="{{ $p->nomor_meja }}"
+                                data-kapasitas="{{ $p->kapasitas }}"
+                                data-status="{{ $p->status }}">
                                 <i class="fas fa-edit"></i>
                             </button>
                             <form method="post" action="{{ route('meja.destroy', $p->id) }}" style="display: inline">

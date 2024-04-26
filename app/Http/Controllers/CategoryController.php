@@ -8,6 +8,12 @@ use App\Http\Requests\UpdateCategoryRequest;
 use PDOException;
 use Illuminate\Database\QueryException;
 use Exception;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\CategoryExport;
+use App\Imports\CategoryImport;
+use Barryvdh\DomPDF\Facade\Pdf;
+
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -16,13 +22,35 @@ class CategoryController extends Controller
      */
     public function index()
     {
-            try{
-                $data['category'] = Category::get();
-                return view('category.index')->with($data);
-            }
-            catch (QueryException | Exception | PDOException $error) {
-                $this->failResponse($error->getMessage(), $error->getCode());
-            }
+        try {
+            $data['category'] = Category::get();
+            return view('category.index')->with($data);
+        } catch (QueryException | Exception | PDOException $error) {
+            $this->failResponse($error->getMessage(), $error->getCode());
+        }
+    }
+
+    public function generatePDF()
+    {
+        // Data untuk ditampilkan dalam PDF
+        $data = Category::all();
+
+        // Render view ke HTML
+        $pdf = PDF::loadView('category/category-pdf', ['category' => $data]);
+        $date = date('Y-m-d');
+        return $pdf->download($date . '-data-category.pdf');
+    }
+
+    public function exportData()
+    {
+        $date = date('Y-m-d');
+        return Excel::download(new CategoryExport, $date . '_category.xlsx');
+    }
+
+    public function importData()
+    {
+        Excel::import(new CategoryImport, request()->file('import')); // Replace XLSX with the appropriate reader type
+        return redirect('category')->with('success', 'Import data paket berhasil!');
     }
 
     /**
@@ -74,6 +102,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect('category')->with('success','Data category berhasil dihapus!');
+        return redirect('category')->with('success', 'Data category berhasil dihapus!');
     }
 }

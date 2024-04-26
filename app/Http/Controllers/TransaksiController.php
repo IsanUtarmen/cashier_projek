@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Request;
 use App\Http\Controllers\first;
-
+use App\Models\Stok;
 
 class TransaksiController extends Controller
 {
@@ -63,6 +63,9 @@ class TransaksiController extends Controller
 
             // Membuat detail transaksi
             foreach ($request->orderedList as $detail) {
+                $stok = Stok::where('menu_id', $detail['menu_id'])->first();
+                $stok->jumlah = $stok->jumlah - $detail['qty'];
+                $stok->save();
                 DetailTransaksi::create([
                     'transaksi_id' => $notrans,
                     'menu_id' => $detail['menu_id'],

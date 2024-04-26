@@ -39,6 +39,17 @@
                                         data-target="#modalFormCategory">
                                         Tambah Category
                                     </button>
+                                    <a href="{{ route('export-category-pdf') }}" class="btn btn-danger">
+                                        <i class="fas fa-file-pdf"></i> Export PDF
+                                    </a>
+                                    <a href="{{ route('export-category') }}" class="btn btn-success">
+                                        <i class="fa fa-file-excel"></i> Export
+                                    </a>
+                                    <!-- Button Import -->
+                                    <button type="button" class="btn btn-warning" data-toggle="modal"
+                                        data-target="#formImport">
+                                        <i class="fas fa-file-excel"></i> Import
+                                    </button>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -59,14 +70,15 @@
                                             @foreach ($errors->all() as $error)
                                                 <li>{{ $error }}</li>
                                             @endforeach
-                                            </ul>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" \
+                                        </ul>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" \
                                             aria-label="Close">
                                         </button>
                                     </div>
                                 @endif
                                 <div class="mt-3">
                                     @include('category.data')
+                                    @include('category.modal')
                                 </div>
                                 <!-- Button trigger modal -->
                             </div>
@@ -86,50 +98,50 @@
     <script>
         $('#tbl-category').DataTable()
 
-        $('.alert-success').fadeTo(2000,500).slideUp(500, function(){
-             $('.alert-success').slideUp(500)
+        $('.alert-success').fadeTo(2000, 500).slideUp(500, function() {
+            $('.alert-success').slideUp(500)
         })
-        $('.alert-danger').fadeTo(2000,500).slideUp(500, function(){
+        $('.alert-danger').fadeTo(2000, 500).slideUp(500, function() {
             $('.alert-danger').slideUp(500)
         })
 
         console.log($('.delete-data'))
 
-        $('.delete-data').on('click', function(e){
-        e.preventDefault()
-        const data = $(this).closest('tr').find('td:eq(1)').text()
-        Swal.fire({
-            title: `Apakah data <span style="color:red">${data}</span> akan dihapus?`,
-            text: "Data tidak bisa dikembalikan!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, hapus data ini!'
-        }).then((result) => {
-            if (result.isConfirmed)
-              $(e.target).closest('form').submit()
-            else swal.close()
+        $('.delete-data').on('click', function(e) {
+            e.preventDefault()
+            const data = $(this).closest('tr').find('td:eq(1)').text()
+            Swal.fire({
+                title: `Apakah data <span style="color:red">${data}</span> akan dihapus?`,
+                text: "Data tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus data ini!'
+            }).then((result) => {
+                if (result.isConfirmed)
+                    $(e.target).closest('form').submit()
+                else swal.close()
+            })
         })
-    })
 
-    $('#modalFormCategory').on('show.bs.modal', function(e) {
-        const btn = $(e.relatedTarget)
-        const mode = btn.data('mode')
-        const nama_category = btn.data('nama_category')
-        const id = btn.data('id')
-        const modal = $(this)
-        if(mode === 'edit'){
-            modal.find('.modal-title').text('Edit Data')
-            modal.find('#nama_category').val(nama_category)
-            modal.find('.modal-body form').attr('action','{{ url('category')}}/' + id)
-            modal.find('#method').html('@method("PATCH")')
-        }else{
-            modal.find('.modal-title').text('Input Data category')
-            modal.find('#nama_category').val('')
-            modal.find('#method').html('')
-            modal.find('.modal-body form').attr('action','{{ url('category') }}')
-        }
-    })
+        $('#modalFormCategory').on('show.bs.modal', function(e) {
+            const btn = $(e.relatedTarget)
+            const mode = btn.data('mode')
+            const nama_category = btn.data('nama_category')
+            const id = btn.data('id')
+            const modal = $(this)
+            if (mode === 'edit') {
+                modal.find('.modal-title').text('Edit Data')
+                modal.find('#nama_category').val(nama_category)
+                modal.find('.modal-body form').attr('action', '{{ url('category') }}/' + id)
+                modal.find('#method').html('@method('PATCH')')
+            } else {
+                modal.find('.modal-title').text('Input Data category')
+                modal.find('#nama_category').val('')
+                modal.find('#method').html('')
+                modal.find('.modal-body form').attr('action', '{{ url('category') }}')
+            }
+        })
     </script>
 @endpush

@@ -9,6 +9,12 @@ use App\Http\Requests\UpdatePelangganRequest;
 use Illuminate\Database\QueryException;
 use Exception;
 use PDOException;
+use Illuminate\Http\Request;
+use Termwind\Components\Dd;
+use App\Exports\PelangganExport;
+use App\Imports\PelangganImport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class PelangganController extends Controller
 {
@@ -17,14 +23,26 @@ class PelangganController extends Controller
      */
     public function index()
     {
-        try{
+        try {
             $data['pelanggan'] = Pelanggan::get();
-            $data['jenis'] = Jenis::get();
+
             return view('pelanggan.index')->with($data);
-        }
-        catch (QueryException | Exception | PDOException $error) {
+        } catch (QueryException | Exception | PDOException $error) {
             $this->failResponse($error->getMessage(), $error->getCode());
         }
+    }
+
+    public function exportData()
+    {
+
+        $date = date('Y-m-d');
+        return Excel::download(new PelangganExport, $date . '_pelanggan.xlsx');
+    }
+
+    public function importData()
+    {
+        Excel::import(new PelangganImport, request()->file('import')); // Replace XLSX with the appropriate reader type
+        return redirect('pelanggan')->with('success', 'Import data paket berhasil!');
     }
 
     /**
@@ -39,8 +57,7 @@ class PelangganController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StorePelangganRequest $request)
-    {
-        {
+    { {
             Pelanggan::create($request->all());
 
             return redirect('pelanggan')->with('success', 'Data Pelanggan berhasil di tambahkan!');
@@ -78,6 +95,6 @@ class PelangganController extends Controller
     public function destroy($id)
     {
         Pelanggan::find($id)->delete();
-        return redirect('pelanggan')->with('success','Data Pelanggan berhasil dihapus!');
+        return redirect('pelanggan')->with('success', 'Data Pelanggan berhasil dihapus!');
     }
 }

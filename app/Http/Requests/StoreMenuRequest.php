@@ -22,7 +22,12 @@ class StoreMenuRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'jenis_id' => 'required',
+            'nama_menu' => 'required',
+            'harga' => 'required',
+            'image' => 'required',
+            'deskripsi' => 'required',
+
         ];
     }
 }

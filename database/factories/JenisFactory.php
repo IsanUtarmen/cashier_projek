@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,8 @@ class JenisFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            //
-        ];
+       return [
+        'nama_jenis' => fake()->randomElement(['MAKANAN', 'MINUMAN', 'SNACK']),
+       ];
     }
 }

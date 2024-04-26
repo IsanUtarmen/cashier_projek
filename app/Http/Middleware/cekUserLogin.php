@@ -24,7 +24,7 @@ class cekUserLogin
         }
         if($user->level ==$rules)
             return $next($request);
-        
+
             return redirect('login')->with('error','you have no privildge');
     }
 }

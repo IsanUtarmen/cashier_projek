@@ -9,6 +9,12 @@ use App\Http\Requests\UpdateStokRequest;
 use Illuminate\Database\QueryException;
 use Exception;
 use PDOException;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\StokExport;
+use App\Imports\StokImport;
+
+use Illuminate\Support\Facades\DB;
+
 
 class StokController extends Controller
 {
@@ -24,6 +30,17 @@ class StokController extends Controller
         } catch (QueryException | Exception | PDOException $error) {
             $this->failResponse($error->getMessage(), $error->getCode());
         }
+    }
+    public function exportData()
+    {
+        $date = date('Y-m-d');
+        return Excel::download(new StokExport, $date . '_stok.xlsx');
+    }
+
+    public function importData()
+    {
+        Excel::import(new StokImport, request()->file('import')); // Replace XLSX with the appropriate reader type
+        return redirect('stok')->with('success', 'Import data paket berhasil!');
     }
 
     /**

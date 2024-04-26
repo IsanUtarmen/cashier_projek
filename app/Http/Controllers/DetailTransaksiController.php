@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\DetailTransaksi;
 use App\Http\Requests\StoreDetailTransaksiRequest;
 use App\Http\Requests\UpdateDetailTransaksiRequest;
+use Illuminate\Http\Request;
+use App\Exports\DetailTransaksiExport;
+// use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class DetailTransaksiController extends Controller
 {
@@ -13,8 +18,45 @@ class DetailTransaksiController extends Controller
      */
     public function index()
     {
-        //
+        $data['title'] ='Detail Transaksi';
+        $data['detail_transaksi'] = DetailTransaksi::all();
+        return view('laporan.index')->with($data);
     }
+
+    public function exportData(){
+        $date = date('Y-m-d');
+        return Excel::download(new DetailTransaksiExport, $date.'_laporan.xlsx');
+    }
+
+        public function generatePDF()
+    {
+    // Data untuk ditampilkan dalam PDF
+        $data = DetailTransaksi::all();
+
+        // // Render view ke HTML
+        // $pdf = PDF::loadView('laporan/laporan-pdf', ['laporan'=>$data]);
+        // $date = date('Y-m-d');
+        // return $pdf->download($date.'-data-laporan.pdf');
+    }
+
+    public function cariData(Request $request)
+{
+    // Validasi data yang diterima dari permintaan
+    $request->validate([
+        'tanggalAwal' => 'required|date',
+        'tanggalAkhir' => 'required|date'
+    ]);
+
+    // Ambil nilai tanggal awal dan tanggal akhir dari permintaan
+    $tanggalAwal = $request->input('tanggalAwal');
+    $tanggalAkhir = $request->input('tanggalAkhir');
+
+    // Lakukan pencarian data berdasarkan rentang tanggal pada model DetailTransaksi
+    $data = DetailTransaksi::whereBetween('tanggal', [$tanggalAwal, $tanggalAkhir])->get();
+
+    // Kembalikan data ke frontend, misalnya dalam format JSON
+    return response()->json($data);
+}
 
     /**
      * Show the form for creating a new resource.

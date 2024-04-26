@@ -5,6 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Meja;
 use App\Http\Requests\StoreMejaRequest;
 use App\Http\Requests\UpdateMejaRequest;
+use Exception;
+use PDOException;
+use App\Exports\MejaExport;
+use App\Imports\MejaImport;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Termwind\Components\Dd;
 
 class MejaController extends Controller
 {
@@ -15,6 +22,39 @@ class MejaController extends Controller
     {
         $data['meja'] = Meja::get();
         return view('meja.index')->with($data);
+    }
+
+    public function exportData()
+    {
+        // $date = date('Y-m-d');
+        return Excel::download(new MejaExport,   '_meja.xlsx');
+    }
+
+    public function importData()
+    {
+
+        Excel::import(new MejaImport, request()->file('import')); // Replace XLSX with the appropriate reader type
+        return redirect('meja')->with('success', 'Import data paket berhasil!');
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $row_num = $request->input('row_num');
+        $new_status = $request->input('new_status');
+
+        // Temukan data absensi dengan nomor baris yang sesuai
+        $Meja = Meja::find($row_num);
+
+        // Jika data absensi tidak ditemukan, kembalikan respons dengan pesan error
+        if (!$Meja) {
+            return response()->json(['error' => 'Data Meja tidak ditemukan', 'id' => $row_num], 404);
+        }
+
+        // Perbarui status absensi
+        $Meja->status = $new_status;
+        $Meja->save();
+
+        return response ()->json(['message' => 'Status updated successfully']);
     }
 
     /**
@@ -29,9 +69,10 @@ class MejaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMejaRequest $request, Meja $meja)
+    public function update(UpdateMejaRequest $request, $id)
+
     {
-        $meja->update($request->all());
+        $Meja = Meja::find($id)->update($request->all());
         return redirect('meja')->with('success', 'Update data berhasil');
     }
 

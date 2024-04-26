@@ -39,6 +39,9 @@
                                         data-target="#modalFormMenu">
                                         Tambah Menu
                                     </button>
+                                    <a href="{{ route('export-menu-pdf') }}" class="btn btn-danger">
+                                        <i class="fas fa-file-pdf"></i> Export PDF
+                                    </a>
                                     <a href="{{ route('export-menu') }}" class="btn btn-success">
                                         <i class="fa fa-file-excel"></i> Export
                                     </a>
@@ -76,6 +79,7 @@
                                 @endif
                                 <div class="mt-3">
                                     @include('menu.data')
+                                    @include('menu.modal')
                                 </div>
                                 <!-- Button trigger modal -->
                             </div>
